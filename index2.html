@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<title>Star Wars</title>
+</head>
+<body>
+<div class="container">
+	<div class="row select-section">
+		<h1 class="m-2">Please select your character!</h1>
+		<div class="card-group">
+			<div class="card m-2">
+				<div class="embed-responsive embed-responsive-16by9">
+				<img src="./images/obi-wan.jpg" class="card-img-top embed-responsive-item" alt="character">
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">obi-wan </h5>
+					<h6 class="card-title">[health: 110, attack: 15, defend: 5]</h6>
+					<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+				</div>
+				<button class="btn btn-primary select-button" value="friend">Choose me!</button>
+			</div>
+			<div class="card m-2">
+				<div class="embed-responsive embed-responsive-16by9">
+				<img src="./images/Luke-Skywalker.jpg " class="card-img-top embed-responsive-item" alt="...">
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">Card title</h5>
+					<p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+
+				</div>
+				<button class="btn btn-primary select-button ">Choose me!</button>
+			</div>
+			<div class="card m-2">
+				<div class="embed-responsive embed-responsive-16by9">
+				<img src="./images/Darth%20Maul.jpg" class="card-img-top embed-responsive-item" alt="...">
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">Card title</h5>
+					<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+
+				</div>
+				<button class="btn btn-primary select-button ">Choose me!</button>
+			</div>
+			<div class="card m-2">
+				<div class="embed-responsive embed-responsive-16by9">
+				<img src="./images/yoda.png" class="card-img-top embed-responsive-item" alt="...">
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">Card title</h5>
+					<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+				</div>
+				<button class="btn btn-primary select-button ">Choose me!</button>
+			</div>
+		</div>
+	</div>
+	<div class="row enemy-section">
+		<h1 class="m-2">Enemies Coming!</h1>
+		<div class="card-group">
+			<div class="card m-2">
+				<div class="embed-responsive embed-responsive-16by9">
+					<img src="./images/obi-wan.jpg" class="card-img-top embed-responsive-item" alt="character">
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">obi-wan</h5>
+					<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+
+				</div>
+			</div>
+			<div class="card m-2">
+				<div class="embed-responsive embed-responsive-16by9">
+					<img src="./images/Luke-Skywalker.jpg " class="card-img-top embed-responsive-item" alt="...">
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">Card title</h5>
+					<p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+				</div>
+			</div>
+	</div>
+</div>
+	<div class="row attack-section">
+		<button class="btn btn-danger mx-auto m-2"><h1>ATTACK!</h1></button>
+	</div>
+	<div class="row defend-section">
+		<div class="card-group mx-auto">
+			<div class="card m-2">
+				<div class="embed-responsive embed-responsive-16by9">
+					<img src="./images/obi-wan.jpg" class="card-img-top embed-responsive-item" alt="character">
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">obi-wan</h5>
+					<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+					<div class="add"></div>
+				</div>
+			</div></div>
+	</div>
+</div>
+<script>
+    let item={
+        id: 1,
+    };
+	const str = "\t\t\t\t<button id=\""+item.id+"\" class=\"btn btn-primary select-button chooseMe new\" disabled='true'>Choose me!</button>\n" +
+        "\t\t\t</div>";
+
+    $(".add").html(str);
+    $(".btn").on("click", function () {
+		console.log("clicked btn");
+		$(".new")[0].disabled = false
+    });
+
+	$(".new").on("click", function () {
+		console.log("clicked button");
+    })
+</script>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
