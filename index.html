@@ -32,17 +32,10 @@
 		<button class="btn btn-danger mx-auto m-2"><h1>ATTACK!</h1></button>
 	</div>
 	<div class="row defend-section">
-		<div class="card-group mx-auto">
-			<div class="card m-2">
-				<div class="embed-responsive embed-responsive-16by9">
-					<img src="./images/obi-wan.jpg" class="card-img-top embed-responsive-item" alt="character">
+			<div class="col-11 mx-auto">
+				<div class="card-group defend-section-card-group">
 				</div>
-				<div class="card-body">
-<!--					for holding defend space now!!-->
-					<h5 class="card-title">obi-wan</h5>
-					<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-				</div>
-			</div></div>
+			</div>
 	</div>
 </div>
 
@@ -91,7 +84,7 @@
 
 	    let charactersBox = [charaters.obi, charaters.Darth, charaters.Yuda, charaters.Luke];
 	    let enemies;
-	    let selectedEnemy;
+	    let selectedEnemy=[];
 	    let player;
 	    let gameInit = true;
 	    
@@ -113,8 +106,13 @@
             let getEnemy = function(item){
                 return item.id !== parseInt(choose.id);
             };
-	        selectedEnemy = enemies.filter(getEnemy);
-	        console.log(selectedEnemy);
+            let getSelected = function(item){
+                return item.id === parseInt(choose.id);
+            };
+            selectedEnemy = enemies.filter(getSelected);
+            enemies = enemies.filter(getEnemy);
+            console.log(enemies);
+	        UpdateUI();
         }
 
 	    function getCardsHTML(box) {
@@ -138,7 +136,7 @@
                 "\t\t\t\t\t<h5 class=\"card-title\">[health: "+item.health+" attack: "+item.attack+" defence: "+item.defence+"]</h5>\n" +
                 "\t\t\t\t\t<p class=\"card-text\">"+item.text+"</p>\n" +
                 "\t\t\t\t</div>\n" +
-                "\t\t\t\t<button id=\""+item.id+"\" class=\"btn btn-primary select-button chooseMe\" role='enemy'>Choose me!</button>\n" +
+                "\t\t\t\t<button id=\""+item.id+"\" class=\"btn btn-primary select-button chooseMe\" value='chooseMe'>Choose me!</button>\n" +
                 "\t\t\t</div>";
 	       // console.log(card);
 	        return card;
@@ -154,12 +152,15 @@
                 function setSideClass(sideArray, side){
                     sideArray.map((item)=>{
                         let itemEle = $("#"+item.id)[0];
+                        $(itemEle).attr("value", side);
                         $(itemEle).addClass(side);
                         console.log(itemEle);
                     })
                 }
                 const playHTML = getCardsHTML(player);
                 const enemiesHTML = getCardsHTML(enemies);
+                console.log(selectedEnemy);
+                const selectedEnemyHTML = getCardsHTML(selectedEnemy);
                 //for select section
                 $(".select-section-card-group").html(playHTML);
                 $(".selectPlayText").html("");
@@ -168,25 +169,26 @@
 		       //for enemy section
 		        $(".enemy-section-card-group").html(enemiesHTML);
 				//set player and enemy class to each card
-               setSideClass(enemies, "enemy");
-               setSideClass(player, "player");
+                setSideClass(enemies, "enemy");
+                setSideClass(player, "player");
+
+                $(".defend-section-card-group").html(selectedEnemyHTML);
 	        }
         }
 
         //initialize UI
         UpdateUI();
-
 	    //add click event to every character
-	    $(".chooseMe").on("click", function (e) {
+	    $("[value=chooseMe]").on("click", function (e) {
                 //the function that selects player and set enemy classes
                 console.log("chooseme", e.type);
                 selectCharacters(this);
         });
+        $(document).on( "click","[value=enemy]" , function(){
+            console.log("clicked an enemy");
+            selectEnemy(this);
+        } );
 
-	    $(".enemy").on("click", function () {
-                console.log("clicked an enemy");
-        });
-        UpdateUI();
     });
 </script>
 
