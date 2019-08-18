@@ -39,7 +39,6 @@
 	</div>
 </div>
 
-
 <script>
     $(document).ready(function() {
         console.log("hello");
@@ -190,7 +189,6 @@
                 $(".defend-section-card-group").html(selectedEnemyHTML);
 	        }
         }
-
         //initialize UI
         UpdateUI();
 	    //add click event to every character
@@ -218,23 +216,22 @@
                 }
                  console.log("playerHealth: "+playerHealth+" enemyHealth: "+enemyHealth)
             }
-            getAttack();
 
-            if(enemyHealth < 0 ){
+            if(enemyHealth < 0 && playerHealth >0){
                 console.log("nice!! you defeated "+selectedEnemy[0].name);
                 $(".attack")[0].disabled = true;
                 playerHealth += 100;
                 console.log("your health + 100, please select another enemy !")
-            }else if (playerHealth < 0) {
+            }else if (playerHealth < 0 && enemyHealth > 0) {
+               $(".btn")[0].disabled = true;
                 console.log("ughhh.."+selectedEnemy[0].name+" defeated you..so you lose the game");
                 $(".attack")[0].disabled = true;
+            }else {
+                getAttack();
             }
-
         })
     });
 </script>
-
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
