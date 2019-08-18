@@ -29,7 +29,7 @@
 		</div>
 	</div>
 	<div class="row attack-section">
-		<button class="btn btn-danger mx-auto m-2"><h1>ATTACK!</h1></button>
+		<button class="btn btn-danger mx-auto m-2 attack" disabled="true"><h1>ATTACK!</h1></button>
 	</div>
 	<div class="row defend-section">
 			<div class="col-11 mx-auto">
@@ -87,6 +87,11 @@
 	    let selectedEnemy=[];
 	    let player;
 	    let gameInit = true;
+        let playerHealth;
+        let enemyHealth;
+        let playerRealAttack;
+        let enemyRealAttack;
+        let isWin = false;
 	    
 	    function selectCharacters(choose) {
             let getEnemy = function(item){
@@ -97,7 +102,7 @@
 	        };
 		    enemies = charactersBox.filter(getEnemy);
 		    player = charactersBox.filter(getPlayer);
-		    console.log(player, enemies);
+		    //console.log(player, enemies);
 		    //get update UI
 		    UpdateUI();
         }
@@ -111,32 +116,43 @@
             };
             selectedEnemy = enemies.filter(getSelected);
             enemies = enemies.filter(getEnemy);
-            console.log(enemies);
+           // console.log(enemies);
+           //get health and attack for player and enemy
+            enemyHealth = selectedEnemy[0].health;
+            playerHealth = player[0].health;
+            playerRealAttack = player[0].attack - selectedEnemy[0].defence;
+            enemyRealAttack = selectedEnemy[0].attack - player[0].defence;
 	        UpdateUI();
         }
 
-	    function getCardsHTML(box) {
+	    function getCardsHTML(box, hasButton) {
 	        let cardHTML = "";
 		    box.map((item)=>{
 		       //console.log(item);
-		       cardHTML += makeCard(item);
+		       cardHTML += makeCard(item, hasButton);
 		    });
 		    //console.log(cardHTML);
 		    return cardHTML;
         }
 
-        function makeCard(item) {
+        function makeCard(item, hasButton) {
 	        //the function is using html to make a card and return a string
+	        let button="";
+	        if(hasButton === true){
+	           button = "\t\t\t\t<button id=\""+item.id+"\" class=\"btn btn-primary select-button chooseMe\" value='chooseMe'>Choose me!</button>\n";
+	        }else{
+	            button="";
+	        }
 	        let card = "<div class=\"card m-2\">\n" +
                 "\t\t\t\t<div class=\"embed-responsive embed-responsive-16by9\">\n" +
-                "\t\t\t\t<img src=\""+item.img+"\" class=\"card-img-top embed-responsive-item\" alt=\"character\">\n" +
+                "\t\t\t\t<img src=\""+item.img+"\" class=\"card-img-top "+item.id+" embed-responsive-item\" alt=\"character\">\n" +
                 "\t\t\t\t</div>\n" +
                 "\t\t\t\t<div class=\"card-body\">\n" +
                 "\t\t\t\t\t<h5 class=\"card-title\">"+item.name+"</h5>\n" +
                 "\t\t\t\t\t<h5 class=\"card-title\">[health: "+item.health+" attack: "+item.attack+" defence: "+item.defence+"]</h5>\n" +
                 "\t\t\t\t\t<p class=\"card-text\">"+item.text+"</p>\n" +
                 "\t\t\t\t</div>\n" +
-                "\t\t\t\t<button id=\""+item.id+"\" class=\"btn btn-primary select-button chooseMe\" value='chooseMe'>Choose me!</button>\n" +
+                 button+
                 "\t\t\t</div>";
 	       // console.log(card);
 	        return card;
@@ -144,7 +160,7 @@
         function UpdateUI() {
 	        if(gameInit === true){
 	            //reset UI when game is initialized
-                const cardHTML = getCardsHTML(charactersBox);
+                const cardHTML = getCardsHTML(charactersBox, true);
                 $(".select-section-card-group").html(cardHTML);
                 gameInit = false;
 	        }else {
@@ -154,18 +170,17 @@
                         let itemEle = $("#"+item.id)[0];
                         $(itemEle).attr("value", side);
                         $(itemEle).addClass(side);
-                        console.log(itemEle);
+                        //console.log(itemEle);
                     })
                 }
-                const playHTML = getCardsHTML(player);
-                const enemiesHTML = getCardsHTML(enemies);
-                console.log(selectedEnemy);
-                const selectedEnemyHTML = getCardsHTML(selectedEnemy);
+                const playHTML = getCardsHTML(player, false);
+                const enemiesHTML = getCardsHTML(enemies, true);
+               // console.log(selectedEnemy);
+                const selectedEnemyHTML = getCardsHTML(selectedEnemy, false);
                 //for select section
                 $(".select-section-card-group").html(playHTML);
                 $(".selectPlayText").html("");
                 //console.log(player[0].id);
-		       $("#"+player[0].id)[0].disabled = true;
 		       //for enemy section
 		        $(".enemy-section-card-group").html(enemiesHTML);
 				//set player and enemy class to each card
@@ -181,14 +196,41 @@
 	    //add click event to every character
 	    $("[value=chooseMe]").on("click", function (e) {
                 //the function that selects player and set enemy classes
-                console.log("chooseme", e.type);
+                console.log("you chose a character");
                 selectCharacters(this);
         });
         $(document).on( "click","[value=enemy]" , function(){
-            console.log("clicked an enemy");
+            console.log("you selected an enemy");
             selectEnemy(this);
+            $(".attack")[0].disabled = false;
         } );
 
+        $(document).on("click", ".attack", function () {
+            function getAttack() {
+                //they have chance to do a sequence attack!!!
+                let random = Math.floor(Math.random()*2)+1;
+                if(random === 1){
+                    enemyHealth -= playerRealAttack;
+                    console.log("you give a damage to enemy!"+selectedEnemy[0].name+"'s health - "+playerRealAttack+" !!");
+                }else {
+                    playerHealth -= enemyRealAttack;
+                    console.log("you got a damage by "+selectedEnemy[0].name+"! your health -"+enemyRealAttack+" !!");
+                }
+                 console.log("playerHealth: "+playerHealth+" enemyHealth: "+enemyHealth)
+            }
+            getAttack();
+
+            if(enemyHealth < 0 ){
+                console.log("nice!! you defeated "+selectedEnemy[0].name);
+                $(".attack")[0].disabled = true;
+                playerHealth += 100;
+                console.log("your health + 100, please select another enemy !")
+            }else if (playerHealth < 0) {
+                console.log("ughhh.."+selectedEnemy[0].name+" defeated you..so you lose the game");
+                $(".attack")[0].disabled = true;
+            }
+
+        })
     });
 </script>
 
